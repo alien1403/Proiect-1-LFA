@@ -10,6 +10,8 @@ start_state = []
 
 transitions = []
 
+valid_DFA = True
+
 f.readline()
 f.readline()
 f.readline()
@@ -65,23 +67,23 @@ for line in f:
 transitions_matrix = [[None for i in range(len(states))] for j in range(len(states))]
 
 for i in range(len(transitions)):
-    a,b,c = transitions[i].split(",")
-    b = b.strip(" ")
-    c = c.strip(" ")
-    x = states.index(a)
-    y = states.index(c)
-    transitions_matrix[x][y] = b
-    
+    if valid_DFA == True:
+        a,b,c = transitions[i].split(",")
+        b = b.strip(" ")
+        c = c.strip(" ")
+        if a not in states or c not in states or b not in sigma:
+            valid_DFA = False
+        else:
+            x = states.index(a)
+            y = states.index(c)
+            transitions_matrix[x][y] = b
+
 if len(start_state) != 1:
-    print("Error: There is more than one start state")
+    valid_DFA = False
 elif len(final_states) == 0:
-    print("Error: There are no final states")
+    valid_DFA = False
 elif start_state[0] not in states:
-    print("Error: The start state is not in the states list")
-elif start_state[0] in final_states:
-    print("Error: The start state is a final state")
-elif len(states) < 3:
-    print("Error: There are less than 3 states")
+    valid_DFA = False   
 else:
     ok = True
     for i in range(len(transitions_matrix)):
@@ -89,6 +91,9 @@ else:
             if transitions_matrix[i].count(sigma[j]) > 1:
                 ok = False
     if ok == False:
-        print("Error: There are more than one transition for the same state and letter")
-    else:
-        print("The DFA is correct")
+       valid_DFA = False
+
+if valid_DFA == False:
+    print("Invalid DFA")
+else:
+    print("Valid DFA")
