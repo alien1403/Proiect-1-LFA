@@ -67,22 +67,22 @@ for line in f:
 transitions_matrix = [[None for i in range(len(states))] for j in range(len(states))]
 
 for i in range(len(transitions)):
-    a,b,c = transitions[i].split(",")
-    b = b.strip(" ")
-    c = c.strip(" ")
-    x = states.index(a)
-    y = states.index(c)
-    transitions_matrix[x][y] = b
-    
+    if valid_DFA == True:
+        a,b,c = transitions[i].split(",")
+        b = b.strip(" ")
+        c = c.strip(" ")
+        if a not in states or c not in states or b not in sigma:
+            valid_DFA = False
+        else:
+            x = states.index(a)
+            y = states.index(c)
+            transitions_matrix[x][y] = b
+
 if len(start_state) != 1:
     valid_DFA = False
 elif len(final_states) == 0:
     valid_DFA = False
 elif start_state[0] not in states:
-    valid_DFA = False
-elif start_state[0] in final_states:
-    valid_DFA = False
-elif len(states) < 3:
     valid_DFA = False   
 else:
     ok = True
