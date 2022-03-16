@@ -39,7 +39,10 @@ for line in f:
                 states.append(state)
             else:
                 lista_state[0] = lista_state[0].strip(" ")
-                if lista_state[1] == "F":
+                if len(lista_state[1] > 1):
+                    final_states.append(lista_state[0])
+                    start_state.append(lista_state[0])
+                elif lista_state[1] == "F":
                     final_states.append(lista_state[0])
                 else:
                     start_state.append(lista_state[0])
